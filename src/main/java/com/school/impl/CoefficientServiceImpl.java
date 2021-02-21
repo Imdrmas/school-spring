@@ -1,13 +1,15 @@
 package com.school.impl;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.school.dao.CoefficientDao;
-import com.school.dao.MatterDao;
+import com.school.dao.ProgramDao;
 import com.school.modal.Coefficient;
-import com.school.modal.Matter;
+import com.school.modal.Program;
 import com.school.service.CoefficientService;
 
 @Component
@@ -18,12 +20,13 @@ public class CoefficientServiceImpl implements CoefficientService {
 	private CoefficientDao coefficientDao;
 	
 	@Autowired
-	private MatterDao matterDao;
+	private ProgramDao programDao;
 
 	@Override
 	public Coefficient addCoefficient(Coefficient coefficient, long id) {
-		Matter matter = matterDao.findById(id).get();
-		matter.addCoefficient(coefficient);
+		Program program = programDao.findById(id).get();
+		coefficient.setCreatedAt(new Date());
+	     program.addCoefficient(coefficient);
 		return coefficientDao.save(coefficient);
 	}
 

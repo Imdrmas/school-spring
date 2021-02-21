@@ -1,17 +1,28 @@
 package com.school.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import com.school.modal.Matter;
+import com.school.modal.Subject;
 
 @Service
-public interface MatterService {
+public interface SubjectService {
 
-	Matter addMatter(Matter matter, long id);
+	Subject addSubject(Subject subject, long idSchool);
 	
-	Matter editMatter(Matter matter, long id);
+	Subject editSubject(Subject subject, long id);
 	
-	Matter findMatter(long id);
+	Subject findSubject(long id);
 	
-	void deleteMatter(long id);
+	Subject findSubjectForExam(long id);
+	
+	Subject findSubjectForCourse(long id);
+	
+	void deleteSubject(long id);
+	
+	List<Subject> findAllSubjectsForSchool(long id);
+	
+	List<Subject> findSubjectsForSchool(long id);
+	
 }

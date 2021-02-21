@@ -1,5 +1,8 @@
 package com.school.impl;
 
+import java.util.Date;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,7 @@ public class ActivityServiceImpl implements ActivityService {
 	public Activity addActivity(Activity activity, long id) {
 		School school = schoolDao.findById(id).get();
 		school.addActivity(activity);
+		activity.setCreatedAt(new Date());
 		return activityDao.save(activity);
 	}
 
@@ -33,7 +37,10 @@ public class ActivityServiceImpl implements ActivityService {
 		Activity existActivity = activityDao.findById(id).get();
 		existActivity.setType(activity.getType());
 		existActivity.setDay(activity.getDay());
+		existActivity.setStartDate(activity.getStartDate());
+		existActivity.setEndDate(activity.getEndDate());
 		existActivity.setDescription(activity.getDescription());
+		existActivity.setDate(activity.getDate());
 		return activityDao.save(existActivity);
 	}
 
@@ -45,6 +52,12 @@ public class ActivityServiceImpl implements ActivityService {
 	@Override
 	public void deleteActivity(long id) {
 		 activityDao.deleteById(id);
+	}
+
+	@Override
+	public List<Activity> findActivitiesForSchool(long id) {
+		School school = schoolDao.findById(id).get();
+		return school.getActivities();
 	}
 
 }

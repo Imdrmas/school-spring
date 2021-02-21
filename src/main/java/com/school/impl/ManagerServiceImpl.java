@@ -24,6 +24,7 @@ public class ManagerServiceImpl implements ManagerService {
 	@Override
 	public Manager addManager(Manager manager, long id) {
 		School school = schoolDao.findById(id).get();
+		manager.setSchool(school);
 		school.setManager(manager);
 		return managerDao.save(manager);
 	}
@@ -42,8 +43,16 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
-	public void deleteManager(long id) {
+	public void deleteManager(long id, long idSchhol) {
+	   School school = schoolDao.findById(idSchhol).get();
+	   school.setManager(null);
        managerDao.deleteById(id);	
+	}
+
+	@Override
+	public Manager findManagerForSchool(long id) {
+		School school = schoolDao.findById(id).get();
+		return school.getManager();
 	}
 
 }

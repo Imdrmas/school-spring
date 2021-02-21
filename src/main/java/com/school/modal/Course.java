@@ -1,70 +1,55 @@
 package com.school.modal;
 
-
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "activites")
-public class Activity extends PersistableElement {
-
+@Table(name = "courses")
+public class Course extends PersistableElement {
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private String type;
-
-	private String day;
-	
 	private String date;
 	
 	private String startDate;
 	
 	private String endDate;
-
-	@JsonBackReference(value = "school")
-	@ManyToOne
-	private School school;
-
-	public Activity() {
-		super();
-	}
-
-	public Activity(String type, String day, String date, School school) {
-		super();
-		this.type = type;
-		this.day = day;
-		this.date = date;
-		this.school = school;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getDay() {
-		return day;
-	}
 	
+	@JsonBackReference(value = "subject")
+	@OneToOne(cascade = CascadeType.ALL)
+	private Subject subject;
+	
+	@JsonBackReference(value = "level")
+	@ManyToOne
+	private Level level;
+
+	public Course() {
+		super();
+	}
+
+	public Course(String date, String startDate, String endDate, Subject subject, Level level) {
+		super();
+		this.date = date;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.subject = subject;
+		this.level = level;
+	}
+
 	public String getDate() {
 		return date;
 	}
 
 	public void setDate(String date) {
 		this.date = date;
-	}
-
-	public void setDay(String day) {
-		this.day = day;
 	}
 
 	public String getStartDate() {
@@ -83,12 +68,20 @@ public class Activity extends PersistableElement {
 		this.endDate = endDate;
 	}
 
-	public School getSchool() {
-		return school;
+	public Subject getSubject() {
+		return subject;
 	}
 
-	public void setSchool(School school) {
-		this.school = school;
+	public void setSubject(Subject subject) {
+		this.subject = subject;
 	}
+
+	public Level getLevel() {
+		return level;
+	}
+
+	public void setLevel(Level level) {
+		this.level = level;
+	}	
 
 }

@@ -1,9 +1,6 @@
 package com.school.modal;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -11,13 +8,14 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "notes")
-public class Note {
+public class Note extends PersistableElement {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	private int grade;
+	private double score;
 
 	@JsonBackReference(value = "exam")
 	@ManyToOne
@@ -27,26 +25,18 @@ public class Note {
 		super();
 	}
 
-	public Note(int grade, Exam exam) {
+	public Note(double score, Exam exam) {
 		super();
-		this.grade = grade;
+		this.score = score;
 		this.exam = exam;
 	}
 
-	public long getId() {
-		return id;
+	public double getScore() {
+		return score;
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public int getGrade() {
-		return grade;
-	}
-
-	public void setGrade(int grade) {
-		this.grade = grade;
+	public void setScore(double score) {
+		this.score = score;
 	}
 
 	public Exam getExam() {

@@ -13,5 +13,7 @@ public interface ManagerService {
 	
 	Manager findManager(long id);
 	
-	void deleteManager(long id);
+	Manager findManagerForSchool(long id);
+	
+	void deleteManager(long id, long idSchhol);
 }

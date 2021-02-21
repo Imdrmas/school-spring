@@ -2,27 +2,19 @@ package com.school.modal;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "exams")
-public class Exam {
+public class Exam extends PersistableElement {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	private String day;
+	private String date;
 
 	private String start;
 
@@ -35,33 +27,31 @@ public class Exam {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "exam")
 	private List<Note> notes;
 
+	@JsonBackReference(value = "subject")
+	@OneToOne(cascade = CascadeType.ALL)
+	private Subject subject;
+
 	public Exam() {
 		super();
 	}
 
-	public Exam(String day, String start, String end, School school, List<Note> notes) {
+	public Exam(String date, String start, String end, School school, List<Note> notes,
+			Subject subject) {
 		super();
-		this.day = day;
+		this.date = date;
 		this.start = start;
 		this.end = end;
 		this.school = school;
 		this.notes = notes;
+		this.subject = subject;
 	}
 
-	public long getId() {
-		return id;
+	public String getDate() {
+		return date;
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getDay() {
-		return day;
-	}
-
-	public void setDay(String day) {
-		this.day = day;
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 	public String getStart() {
@@ -96,11 +86,20 @@ public class Exam {
 		this.notes = notes;
 	}
 
+	public Subject getSubject() {
+		return subject;
+	}
+
+	public void setSubject(Subject subjects) {
+		this.subject = subjects;
+	}
+
 	public void addNote(Note note) {
-		if (getNotes()==null) {
+		if (getNotes() == null) {
 			this.notes = new ArrayList<>();
 		}
 		getNotes().add(note);
 		note.setExam(this);
 	}
+
 }

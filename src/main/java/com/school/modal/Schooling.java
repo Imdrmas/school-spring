@@ -1,50 +1,51 @@
 package com.school.modal;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "schoolings")
-public class Schooling {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+public class Schooling extends PersistableElement {
 
-	private String year;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private int year;
 
 	@JsonBackReference(value = "school")
 	@ManyToOne
 	private School school;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "schooling")
+	private List<Level> levels;
 
 	public Schooling() {
 		super();
 	}
 
-	public Schooling(String year, School school) {
+	public Schooling(int year, School school, List<Level> levels) {
 		super();
 		this.year = year;
 		this.school = school;
+		this.levels = levels;
 	}
 
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getYear() {
+	public int getYear() {
 		return year;
 	}
 
-	public void setYear(String year) {
+	public void setYear(int year) {
 		this.year = year;
 	}
 
@@ -56,4 +57,21 @@ public class Schooling {
 		this.school = school;
 	}
 
+	public List<Level> getLevels() {
+		return levels;
+	}
+
+	public void setLevels(List<Level> levels) {
+		this.levels = levels;
+	}
+	
+	public void addLevel(Level level) {
+		if (getLevels()==null) {
+			this.levels = new ArrayList<>();
+		}
+		getLevels().add(level);
+		level.setSchooling(this);
+	}
+
+	
 }

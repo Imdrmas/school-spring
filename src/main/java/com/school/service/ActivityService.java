@@ -1,5 +1,7 @@
 package com.school.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.school.modal.Activity;
@@ -14,5 +16,7 @@ public interface ActivityService {
 	Activity findActivity(long id);
 	
 	void deleteActivity(long id);
+	
+	List<Activity> findActivitiesForSchool(long id);
 
 }

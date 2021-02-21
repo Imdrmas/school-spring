@@ -1,5 +1,7 @@
 package com.school.impl;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,7 @@ public class NoteServiceImpl implements NoteService {
 	@Override
 	public Note addNote(Note note, long id) {
 		Exam exam = examDao.findById(id).get();
+		note.setCreatedAt(new Date());
 		exam.addNote(note);
 		return noteDao.save(note);
 	}
@@ -30,7 +33,8 @@ public class NoteServiceImpl implements NoteService {
 	@Override
 	public Note editNote(Note note, long id) {
 		Note existNote = noteDao.findById(id).get();
-		existNote.setGrade(note.getGrade());
+		existNote.setScore(note.getScore());
+		existNote.setDescription(note.getDescription());
 		return noteDao.save(existNote);
 	}
 

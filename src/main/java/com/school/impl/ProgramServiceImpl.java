@@ -1,12 +1,14 @@
 package com.school.impl;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.school.dao.MatterDao;
+import com.school.dao.SubjectDao;
 import com.school.dao.ProgramDao;
-import com.school.modal.Matter;
+import com.school.modal.Subject;
 import com.school.modal.Program;
 import com.school.service.ProgramService;
 
@@ -18,11 +20,12 @@ public class ProgramServiceImpl implements ProgramService {
 	private ProgramDao programDao;
 	
 	@Autowired
-	private MatterDao matterDao;
+	private SubjectDao matterDao;
 
 	@Override
 	public Program addProgram(Program program, long id) {
-		Matter matter = matterDao.findById(id).get();
+		Subject matter = matterDao.findById(id).get();
+		program.setCreatedAt(new Date());
 		matter.addProgram(program);
 		return programDao.save(program);
 	}
@@ -37,14 +40,12 @@ public class ProgramServiceImpl implements ProgramService {
 
 	@Override
 	public Program findProgram(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return programDao.findById(id).get();
 	}
 
 	@Override
 	public void deleteProgram(long id) {
-		// TODO Auto-generated method stub
-		
+        programDao.deleteById(id);
 	}
 	
 	

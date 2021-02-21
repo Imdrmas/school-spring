@@ -1,44 +1,34 @@
 package com.school.modal;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "schools")
-public class School {
+public class School extends PersistableElement {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private String name;
 
 	private String city;
-
-	@Column(columnDefinition = "TEXT")
-	private String description;
 
 	private String department;
 
 	private String open;
 
 	private String close;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createAt;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "school")
 	private List<Activity> activities;
@@ -50,43 +40,34 @@ public class School {
 	private List<Exam> exams;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "school")
-	private List<Matter> matters;
+	private List<Subject> subjects;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "school")
 	private List<Room> rooms;
 
-	@OneToOne(mappedBy = "school")
+	@JsonBackReference(value = "manager")
+	@OneToOne(cascade = CascadeType.ALL)
 	private Manager manager;
 
 	public School() {
 		super();
 	}
 
-	public School(String name, String city, String description, String department, String open, String close,
-			Date createAt, List<Activity> activities, List<Schooling> schoolings, List<Exam> exams,
-			List<Matter> matters, List<Room> rooms, Manager manager) {
+	public School(String name, String city, String department, String open, String close,
+			List<Activity> activities, List<Schooling> schoolings, List<Exam> exams,
+			List<Subject> subjects, List<Room> rooms, Manager manager) {
 		super();
 		this.name = name;
 		this.city = city;
-		this.description = description;
 		this.department = department;
 		this.open = open;
 		this.close = close;
-		this.createAt = createAt;
 		this.activities = activities;
 		this.schoolings = schoolings;
 		this.exams = exams;
-		this.matters = matters;
+		this.subjects = subjects;
 		this.rooms = rooms;
 		this.manager = manager;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -103,14 +84,6 @@ public class School {
 
 	public void setCity(String city) {
 		this.city = city;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public String getDepartment() {
@@ -137,14 +110,6 @@ public class School {
 		this.close = close;
 	}
 
-	public Date getCreateAt() {
-		return createAt;
-	}
-
-	public void setCreateAt(Date createAt) {
-		this.createAt = createAt;
-	}
-
 	public List<Activity> getActivities() {
 		return activities;
 	}
@@ -169,12 +134,12 @@ public class School {
 		this.exams = exams;
 	}
 
-	public List<Matter> getMatters() {
-		return matters;
+	public List<Subject> getSubjects() {
+		return subjects;
 	}
 
-	public void setMatters(List<Matter> matters) {
-		this.matters = matters;
+	public void setSubjects(List<Subject> subjects) {
+		this.subjects = subjects;
 	}
 
 	public List<Room> getRooms() {
@@ -217,11 +182,11 @@ public class School {
 		exam.setSchool(this);
 	}
 
-	public void addMatter(Matter matter) {
-		if (getMatters() == null) {
-			this.matters = new ArrayList<>();
+	public void addSubject(Subject matter) {
+		if (getSubjects() == null) {
+			this.subjects = new ArrayList<>();
 		}
-		getMatters().add(matter);
+		getSubjects().add(matter);
 		matter.setSchool(this);
 	}
 
